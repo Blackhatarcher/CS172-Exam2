@@ -2,9 +2,19 @@
 #include <string>
 #include <iostream>
 #include "Citizen.h"
+#include <vector>
+#include <iomanip>
+#include <fstream>
+#include <vector>
+
+//using namespace std is not working  for somereason...
 using namespace std;
 class City
 {
+private:
+	std::string name;
+	int population;
+	std::vector<Citizen*> citizens;
 
 public:
 
@@ -13,7 +23,7 @@ public:
 	//it's population from a file.
 	//Hint: You will want to make the file name
 	//be based on the name of the city.
-	City(string cityName);
+	City(std::string cityName);
 
 	//This is the destructor for the city.  When
 	//this city is destroyed, save the population of
@@ -23,7 +33,7 @@ public:
 	~City();
 
 	//Returns the city name
-	string getCityName();
+	std::string getCityName();
 
 	//Returns the number of citizens in this city
 	int populationSize();
