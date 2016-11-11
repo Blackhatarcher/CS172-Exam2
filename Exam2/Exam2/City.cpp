@@ -41,6 +41,7 @@ City::City(string cityName){
 			}
 			//then I can call each bit of info to construct a citizen and add him to citizens
 			//begin will always be the citizens id
+			//I need to create a pointer to created object and then my addCitizen will accept it
 			addCitizen(*Citizen(begin,aCitizen[1],aCitizen[2],aCitizen[3]));
 			population++;
 			begin += 4;
