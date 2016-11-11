@@ -5,6 +5,8 @@
 #include <iostream>
 #include <fstream>
 
+//using std string seems to be working HERE for some reason
+
 //Creates a new city with the given name
 //When the city is created you need to restore
 //it's population from a file.
@@ -12,12 +14,47 @@
 //be based on the name of the city.
 City::City(string cityName){
 	name = cityName;
-	ifstream input(getCityName() + ".txt");
-	//want to read each line in the file
-	//and dump the words into a constructor that builds citizens 
-	//who will then be added to the citizens vector
+	std::vector<Citizen*> citizens;
+	ifstream fin(getCityName() + ".txt");
+	if (!fin.fail())
+	{
+		//want to read each line in the file
+		//and dump them into a vector
+		//and look at groups of four strings
+		//that will go into a constructor that builds citizens 
+		//who will then be added to the citizens vector
+		string content;
+		std::vector<string> allTheStuff;
+		while (fin>>content)
+		{
+			allTheStuff.push_back(content);
+		}
+		int begin = 0;
+		int end = 3;
+		//I know how many citizens at this point
+		for (int i = 0; i < (allTheStuff.size()) / 4; i++) {
+			std:vector<string> aCitizen;
+			//now i need to iterate through the citizen selected by begin and end
+			//adding his info to aCitizen
+			for (int k = begin; k <= end; k++) {
+				aCitizen.push_back(allTheStuff[k]);
+			}
+			//then I can call each bit of info to construct a citizen and add him to citizens
+			//begin will always be the citizens id
+			addCitizen(*Citizen(begin,aCitizen[1],aCitizen[2],aCitizen[3]));
+			population++;
+			begin += 4;
+			end += 4;
+		}
+	}
+	else {
+		population = 0;
+	}
+	fin.close();
 
 }
+
+
 
 //This is the destructor for the city.  When
 //this city is destroyed, save the population of
@@ -34,7 +71,8 @@ City::~City(){
 	//each line will hold a citizen
 	// id firstname lastname color
 	for (int i = 0; i < citizens.size(); i++) {
-		output << (*citizens[i]).getId() << " " << (*citizens[i]).getFirstName() << " " << (*citizens[i]).getLastName() << " " << (*citizens[i]).getFavoriteColor() << endl;
+		//I want to make sure the id is entered as a string like everything else
+		output << to_string((*citizens[i]).getId()) << " " << (*citizens[i]).getFirstName() << " " << (*citizens[i]).getLastName() << " " << (*citizens[i]).getFavoriteColor() << endl;
 	}
 	output.close();
 	//and I need to... delete the pointer to the citizens array?
@@ -59,6 +97,7 @@ Citizen* City::getCitizenAtIndex(int index) {
 //make a copy of this citizen so that you make
 //sure to keep it around for the life of the city.
 void City::addCitizen(Citizen* citizen) {
+	population++;
 	citizens.push_back(citizen);
 }
 
